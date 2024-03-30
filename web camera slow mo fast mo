@@ -1,0 +1,42 @@
+import cv2
+
+# Function to change frame rate for slow motion or fast motion
+def change_frame_rate(frame, factor):
+    return cv2.resize(frame, None, fx=factor, fy=factor, interpolation=cv2.INTER_LINEAR)
+
+# Initialize webcam
+cap = cv2.VideoCapture("C:/huzurabad/03.mp4")
+
+if not cap.isOpened():
+    print("Error: Couldn't open webcam.")
+    exit()
+
+# Variables to control frame rate
+slow_factor = 0.5  # Slow motion factor (0.5 means half the original frame rate)
+fast_factor = 2.0  # Fast motion factor (2.0 means double the original frame rate)
+
+while True:
+    ret, frame = cap.read()
+    
+    if not ret:
+        print("Error: Couldn't read frame.")
+        break
+    
+    # Display original frame
+    cv2.imshow('Original', frame)
+    
+    # Display slow motion frame
+    slow_frame = change_frame_rate(frame, slow_factor)
+    cv2.imshow('Slow Motion', slow_frame)
+    
+    # Display fast motion frame
+    fast_frame = change_frame_rate(frame, fast_factor)
+    cv2.imshow('Fast Motion', fast_frame)
+
+    # Exit loop when 'q' key is pressed
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Release webcam and close windows
+cap.release()
+cv2.destroyAllWindows()
