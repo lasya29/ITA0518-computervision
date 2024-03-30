@@ -1,0 +1,37 @@
+import cv2
+import numpy as np
+
+def sharpen_using_gradient(image):
+    # Convert image to grayscale
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    
+    # Compute gradients in x and y directions using Sobel operator
+    gradient_x = cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=3)
+    gradient_y = cv2.Sobel(gray, cv2.CV_64F, 0, 1, ksize=3)
+    
+    # Compute magnitude of gradient
+    gradient_magnitude = np.sqrt(gradient_x*2 + gradient_y*2)
+    
+    # Normalize gradient magnitude to 0-255 range
+    gradient_magnitude = cv2.normalize(gradient_magnitude, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+    
+    # Add the gradient magnitude to the original image
+    sharpened_image = cv2.addWeighted(image, 1.5, cv2.cvtColor(gradient_magnitude, cv2.COLOR_GRAY2BGR), -0.5, 0)
+    
+    return sharpened_image
+
+def main():
+    # Load the image
+    image = cv2.imread("C:/Users/konda/OneDrive/Pictures/Saved Pictures/48285.jpg")
+    
+    # Perform sharpening using gradient masking
+    sharpened_image = sharpen_using_gradient(image)
+    
+    # Display the original and sharpened images
+    cv2.imshow('Original Image', image)
+    cv2.imshow('Sharpened Image', sharpened_image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+if _name_ == "_main_":
+    main()
