@@ -1,0 +1,38 @@
+import cv2
+
+def play_video(video_path, slow_motion_factor=1, fast_motion_factor=1):
+    cap = cv2.VideoCapture("C:/huzurabad/03.mp4")
+
+    if not cap.isOpened():
+        print("Error: Unable to open video.")
+        return
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+
+        if not ret:
+            break
+
+        # Display the frame
+        cv2.imshow('Video', frame)
+
+        # Slow motion
+        slow_frame = cv2.resize(frame, None, fx=1/slow_motion_factor, fy=1/slow_motion_factor, interpolation=cv2.INTER_LINEAR)
+        cv2.imshow('Slow Motion', slow_frame)
+
+        # Fast motion
+        fast_frame = cv2.resize(frame, None, fx=fast_motion_factor, fy=fast_motion_factor, interpolation=cv2.INTER_LINEAR)
+        cv2.imshow('Fast Motion', fast_frame)
+
+        if cv2.waitKey(25) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+if _name_ == "_main_":
+    # Path to the captured video
+    video_path = "C:/huzurabad/03.mp4"
+
+    # Play the video
+    play_video(video_path, slow_motion_factor=2, fast_motion_factor=0.5)
