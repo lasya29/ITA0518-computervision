@@ -1,0 +1,25 @@
+import cv2
+import numpy as np
+
+# Load the image
+image = cv2.imread("C:/Users/konda/OneDrive/Pictures/ashu.jpg")
+
+# Define the transformation matrix
+# For affine transformation, we need 3 points from the input image and their corresponding locations in the output image
+# We'll create a transformation matrix to rotate the image by 45 degrees and scale it by 1.5 times
+rows, cols = image.shape[:2]
+center = (cols / 2, rows / 2)
+angle = 45
+scale = 1.5
+rotation_matrix = cv2.getRotationMatrix2D(center, angle, scale)
+
+# Perform the affine transformation
+result = cv2.warpAffine(image, rotation_matrix, (cols, rows))
+
+# Display the original and transformed images
+cv2.imshow('Original', image)
+cv2.imshow('Affine Transformed', result)
+
+# Wait for any key to close windows
+cv2.waitKey(0)
+cv2.destroyAllWindows()
