@@ -1,0 +1,28 @@
+import cv2
+import numpy as np
+
+# Load the image
+image = cv2.imread("C:/Users/konda/Downloads/paint image.jpeg")
+
+# Define the corners of the original image
+original_pts = np.float32([[0, 0], [image.shape[1], 0], [0, image.shape[0]], [image.shape[1], image.shape[0]]])
+
+# Define the corners of the transformed image
+# Here, we specify the points to which the original corners will be mapped
+# You need to specify these points manually or use some techniques to detect them automatically
+# For demonstration purposes, we'll create a perspective where the image appears tilted
+tilted_pts = np.float32([[100, 200], [400, 50], [50, 500], [400, 400]])
+
+# Compute the perspective transformation matrix
+perspective_matrix = cv2.getPerspectiveTransform(original_pts, tilted_pts)
+
+# Perform the perspective transformation
+result = cv2.warpPerspective(image, perspective_matrix, (image.shape[1], image.shape[0]))
+
+# Display the original and transformed images
+cv2.imshow('Original', image)
+cv2.imshow('Perspective Transformed', result)
+
+# Wait for any key to close windows
+cv2.waitKey(0)
+cv2.destroyAllWindows()
