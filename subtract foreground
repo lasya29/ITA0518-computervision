@@ -1,0 +1,14 @@
+import cv2
+import numpy as np
+input_image = cv2.imread("C:/Users/LasyaSri_Kondameedi/OneDrive/Documents/Pictures/Screenshots/Screenshot (45).png")
+hsv_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
+lower_bound = np.array([0, 0, 0]) 
+upper_bound = np.array([179, 255, 100])  
+mask = cv2.inRange(hsv_image, lower_bound, upper_bound)
+foreground = cv2.bitwise_and(input_image, input_image, mask=mask)
+background = cv2.subtract(input_image, foreground)
+cv2.imshow('Input Image', input_image)
+cv2.imshow('Foreground', foreground)
+cv2.imshow('Background', background)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
